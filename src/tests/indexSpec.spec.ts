@@ -1,12 +1,12 @@
 /* eslint-disable no-undef */
 import supertest from 'supertest';
-import app from '../index';
+import app from '../app';
 
 const request = supertest(app);
-describe('Test Root endpoint responses', () => {
-  it('gets the api endpoint', () => {
-    request.get('/images').then((response) => {
-      expect(response.status).toBe(200);
+describe('Test Image Processing endpoint responses', () => {
+  it('Test the api/images endpoint', () => {
+    request.get('/api/images').then((response) => {
+      expect(response.status).toEqual(200);
     });
   });
 });

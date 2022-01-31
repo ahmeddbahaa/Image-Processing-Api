@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { existsSync } from 'fs';
-import sharp from 'sharp';
+import resizeImage from '../../../utilities/image_processing';
 
 const images = express.Router();
 images.get('/', async (req, res) => {
@@ -22,7 +22,7 @@ images.get('/', async (req, res) => {
   // and sent it back to user in response
   console.log(errors);
   if (errors.length !== 0) {
-    res.send(errors);
+    res.status(200).send(errors);
   } else {
     let fullPath: string = path.join('.', 'assets', 'full', filename as string);
     fullPath += '.jpg';
@@ -42,20 +42,12 @@ images.get('/', async (req, res) => {
           res.sendFile(file);
         } else {
           // If not processed before then i will process it
-          const file = path.resolve(fullPath);
-          let outFile = path.join('assets', 'thumb', filename as string);
-          outFile += '.jpg';
-          sharp(file)
-            .resize(length, width)
-            .toFile(outFile)
-            .then(() => {
-              const out = path.resolve(outFile);
-              res.sendFile(out);
-            })
-            .catch((error) => console.log(error));
+
+          const ret = resizeImage(filename, length, width);
+          res.sendFile(path.resolve(ret));
         }
       } else {
-        res.status(404).send('Error! no file was found in the Entered path');
+        res.status(200).send('Error! no file was found in the Entered path');
       }
     } catch (error) {
       console.log('consoled', error);
