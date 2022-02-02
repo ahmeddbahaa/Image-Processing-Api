@@ -1,22 +1,16 @@
 import sharp from 'sharp';
 import path from 'path';
 
-const resizeImage = (
+const resizeImage = async (
   filename: string,
   length: number,
   width: number
-): string => {
+): Promise<string> => {
   let filePath: string = path.join('.', 'assets', 'full', filename as string);
   filePath += '.jpg';
-  let outFile = path.join('assets', 'thumb', filename as string);
+  let outFile: string = path.join('.', 'assets', 'thumb', filename as string);
   outFile += '.jpg';
-  let ret = '';
-  sharp(filePath)
-    .resize(length, width)
-    .toFile(outFile)
-    .then(() => {
-      ret = path.resolve(outFile);
-    });
-  return ret;
+  await sharp(filePath).resize(length, width).toFile(outFile);
+  return outFile;
 };
 export default resizeImage;
