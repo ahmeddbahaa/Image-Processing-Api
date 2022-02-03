@@ -37,9 +37,9 @@ images.get(
         '.',
         'assets',
         'thumb',
-        filename as string
+        filename as string,
       );
-      thumPath += '.jpg';
+      thumPath += length.toString()+'x'+width.toString()+'.jpg';
       try {
         // Check if file exists as raw image
         if (existsSync(fullPath)) {
@@ -49,7 +49,8 @@ images.get(
             res.sendFile(file);
           } else {
             // If not processed before then i will process it
-            await resizeImage(filename, length, width);
+            const ret = await resizeImage(filename, length, width);
+            console.log(ret);
             const file = path.resolve(thumPath);
             res.sendFile(file);
           }

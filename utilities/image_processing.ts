@@ -8,8 +8,13 @@ const resizeImage = async (
 ): Promise<string> => {
   let filePath: string = path.join('.', 'assets', 'full', filename as string);
   filePath += '.jpg';
-  let outFile: string = path.join('.', 'assets', 'thumb', filename as string);
-  outFile += '.jpg';
+  let outFile: string = path.join(
+    '.',
+    'assets',
+    'thumb',
+    filename as string
+  );
+  outFile += length.toString()+'x'+width.toString()+'.jpg';
   await sharp(filePath).resize(length, width).toFile(outFile);
   return outFile;
 };
